@@ -27,6 +27,7 @@ def download_reel(url:str):
 		if i.endswith('txt'):text = open(i,'r').read()
 	text = post_to_text(video,text)
 	print(os.getcwd())
+	if 'Videos' not in os.listdir():os.mkdir('Videos')
 	if 'Videos' in os.getcwd().split('/'):
 		for i in os.listdir():
 			print(i)
