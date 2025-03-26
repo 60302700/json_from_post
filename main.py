@@ -90,6 +90,7 @@ def post_to_text(video,text):
         {
             "role": "user",
             "content": [
+		{"role":"system","content":"Your Convert Raw Text data Into Json and only return the json nothing else just the json data and if you can return anything just say nothing"},
                 {"type": "text", "text": "Convert raw text data into JSON and only return the JSON—nothing else, just the JSON data. What's in this image? Please give me the data in JSON format, including restaurant name, product name, and other relevant details. If nothing can be identified, return 'Nothing can be seen'."},
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encode_image(video)}"}}
             ]
