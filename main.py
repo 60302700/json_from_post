@@ -61,7 +61,7 @@ def post_to_text(video,text):
 	'''
 	function where we use llms and computer vision to extract data from images or audio (extracted from video that will be converted into text) to make json data 	and send it back
 	'''
-	Client = Groq(api_key="")
+	Client = Groq(api_key="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") #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
 	
 	is_video = audio_extraction(video)
 	print('video to mp')
@@ -78,29 +78,33 @@ def post_to_text(video,text):
 		print(text)
 		print(translation.text)
 		to_json = Client.chat.completions.create(
-		messages=[{"role":"system","content":"Your Convert Raw Text data Into Json and only return the json nothing else just the json data and if you can return anything just say nothing"},{"role":"user","content":f"here is the raw text from a short form content to be converted into json collect infomration like name , offer what they provide and where it is {translation.text} and here is the description about the short form content for accuracy {text} i want the name of restatuernt , product name , price a small Description and location and from which social media u got it from"}],model="llama-3.1-8b-instant",temperature=0.3,stop=None,stream=False)
+		messages=[{"role":"system","content":"Your Convert Raw Text data Into Json and only return the json nothing else just the json data and if you can return anything just say nothing"},{"role":"user","content":f"here is the raw text from a short form content to be converted into json collect infomration like name , offer what they provide and where it is {translation.text} and here is the description about the short form content for accuracy {text} i want the name of restatuernt , product name , price a small Description and location and from which social media u got it from and here is the url from where i got it from  {url}"}],model="llama-3.1-8b-instant",temperature=0.3,stop=None,stream=False)
 		try:
 			return json.loads(to_json.choices[0].message.content)
 		except json.decoder.JSONDecodeError:
 			return None
 	else:
-		to_json = Client.chat.completions.create(
-    model="llama-3.2-11b-vision-preview",
-    messages=[
+		to_json = Client.chat.completions.create(messages=[
         {
             "role": "user",
             "content": [
-		{"role":"system","content":"Your Convert Raw Text data Into Json and only return the json nothing else just the json data and if you can return anything just say nothing"},
-                {"type": "text", "text": "Convert raw text data into JSON and only return the JSON—nothing else, just the JSON data. What's in this image? Please give me the data in JSON format, including restaurant name, product name, and other relevant details. If nothing can be identified, return 'Nothing can be seen'."},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encode_image(video)}"}}
-            ]
+                {"type": "text", "text": f"What is in this image im visually impared please give th"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{encode_image(video)}",
+                    },
+                },
+            ],
         }
-    ]
+    ],
+    model="llama-3.2-11b-vision-preview",temperature=0.3,stop=None,stream=False
 )
 
 
+	print(to_json.choices[0].message.content)
 	try:
-		return to_json.choices[0].message.content
+		return json.loads(to_json.choices[0].message.content)
 	except json.decoder.JSONDecodeError:
 		return None
 
