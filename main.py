@@ -61,7 +61,7 @@ def post_to_text(video,text):
 	'''
 	function where we use llms and computer vision to extract data from images or audio (extracted from video that will be converted into text) to make json data 	and send it back
 	'''
-	Client = Groq(api_key="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") #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
+	Client = Groq(api_key="")
 	
 	is_video = audio_extraction(video)
 	print('video to mp')
